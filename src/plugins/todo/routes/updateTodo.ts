@@ -1,8 +1,8 @@
 import { badImplementation } from "@hapi/boom";
-import { updateTodoValidator } from "./validations";
+import { updateTodoValidator } from "../validations";
 import Hapi from "@hapi/hapi";
 
-import { TodoItem } from "./types";
+import { TodoItem } from "../types";
 import Joi from "@hapi/joi";
 import { Category, Priority } from ".prisma/client";
 

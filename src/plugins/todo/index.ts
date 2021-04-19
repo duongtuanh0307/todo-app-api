@@ -1,8 +1,8 @@
 import Hapi from "@hapi/hapi";
-import { addTodoRoute } from "./addTodoRoute";
-import { updateTodoRoute } from "./updateTodoRoute";
-import { deleteTodoRoute } from "./deleteTodoRoute";
-import { getTodoListRoute } from "./getTodoListRoute";
+import { addTodoRoute } from "./routes/addTodo";
+import { updateTodoRoute } from "./routes/updateTodo";
+import { deleteTodoRoute } from "./routes/deleteTodo";
+import { getTodoListRoute } from "./routes/getTodoList";
 
 export const todosPlugin = {
   name: "app/todos",

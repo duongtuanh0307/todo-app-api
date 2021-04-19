@@ -1,8 +1,8 @@
-import { createTodoValidator } from "./validations";
+import { createTodoValidator } from "../validations";
 import Hapi from "@hapi/hapi";
 import { badImplementation } from "@hapi/boom";
 
-import { TodoItem } from "./types";
+import { TodoItem } from "../types";
 import { Category, Priority } from ".prisma/client";
 
 const addNewTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
