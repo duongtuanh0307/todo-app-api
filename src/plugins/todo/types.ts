@@ -3,4 +3,6 @@ export type TodoItem = {
   note?: string;
   scheduleFor: string;
   userId: number;
+  priority: "low" | "normal" | "high";
+  category: "work" | "private";
 };

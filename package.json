@@ -24,6 +24,6 @@
     "build": "prisma generate && tsc",
     "start": "node dist/index.js",
     "compile": "tsc",
-    "dev": "npx ts-node-dev src/index.ts"
+    "dev": "npx ts-node-dev --respawn src/index.ts"
   }
 }

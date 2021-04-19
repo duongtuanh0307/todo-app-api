@@ -18,6 +18,8 @@ const getTodoList = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         updatedAt: true,
         scheduleFor: true,
         userId: true,
+        priority: true,
+        category: true,
       },
     });
     return h.response(todosList).code(200);

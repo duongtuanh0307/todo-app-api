@@ -3,10 +3,13 @@ import Hapi from "@hapi/hapi";
 import { badImplementation } from "@hapi/boom";
 
 import { TodoItem } from "./types";
+import { Category, Priority } from ".prisma/client";
 
 const addNewTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
   const payload = request.payload as TodoItem;
+  const priority = payload.priority.toUpperCase() as Priority;
+  const category = payload.category.toUpperCase() as Category;
 
   try {
     const addedItem = await prisma.todoItem.create({
@@ -15,6 +18,8 @@ const addNewTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         note: payload.note,
         scheduleFor: payload.scheduleFor,
         userId: payload.userId,
+        priority: priority,
+        category: category,
       },
       select: {
         id: true,
@@ -24,6 +29,8 @@ const addNewTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         updatedAt: true,
         scheduleFor: true,
         userId: true,
+        priority: true,
+        category: true,
       },
     });
     return h.response(addedItem).code(201);

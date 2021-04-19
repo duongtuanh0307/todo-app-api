@@ -13,6 +13,18 @@ const inputTodoValidator = Joi.object({
     update: (schema: any) => schema.optional(),
   }),
   userId: Joi.number().integer().required(),
+  category: Joi.string()
+    .valid("work", "private")
+    .alter({
+      create: (schema: any) => schema.required(),
+      update: (schema: any) => schema.optional(),
+    }),
+  priority: Joi.string()
+    .valid("low", "normal", "high")
+    .alter({
+      create: (schema: any) => schema.required(),
+      update: (schema: any) => schema.optional(),
+    }),
 });
 
 export const createTodoValidator = inputTodoValidator.tailor("create");
