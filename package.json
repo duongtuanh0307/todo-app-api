@@ -11,6 +11,7 @@
     "@types/node": "^14.14.41",
     "prisma": "2.21.2",
     "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.2.4"
   },
   "dependencies": {
@@ -23,6 +24,6 @@
     "build": "prisma generate && tsc",
     "start": "node dist/index.js",
     "compile": "tsc",
-    "dev": "npx ts-node-dev src/index.ts"
+    "dev": "npx ts-node-dev --respawn src/index.ts"
   }
 }

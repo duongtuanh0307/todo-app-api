@@ -21,8 +21,10 @@ model TodoItem {
   content     String
   note        String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  scheduleFor DateTime @db.Date
+  updatedAt   DateTime @default(now()) @updatedAt
+  scheduleFor String
+  priority    Priority
+  category    Category
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
@@ -36,4 +38,15 @@ model ReminderSetting {
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+}
+
+enum Category {
+  WORK
+  PRIVATE
 }
