@@ -1,10 +1,11 @@
-import { badImplementation } from "@hapi/boom";
+import { badImplementation, badRequest } from "@hapi/boom";
 import { updateTodoValidator } from "../validations";
 import Hapi from "@hapi/hapi";
 
 import { TodoItem } from "../types";
 import Joi from "@hapi/joi";
 import { Category, Priority } from ".prisma/client";
+import { isValidDate } from "../../../utility/helpers";
 
 const updateTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
@@ -12,6 +13,10 @@ const updateTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const todoId = parseInt(request.params.todoId);
   const priority = payload.priority?.toUpperCase() as Priority;
   const category = payload.category?.toUpperCase() as Category;
+  const scheduleFor = payload.scheduleFor;
+
+  if (scheduleFor && isValidDate(scheduleFor))
+    return badRequest("Format of Date should be YYYY-MM-DD");
 
   try {
     const targetItem = await prisma.todoItem.findUnique({
