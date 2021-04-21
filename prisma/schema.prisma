@@ -31,10 +31,10 @@ model TodoItem {
 }
 
 model ReminderSetting {
-  id            Int      @id @default(autoincrement())
-  active        Boolean  @default(false)
-  morningTime   DateTime @db.Timetz
-  afternoonTime DateTime @db.Timetz
+  id            Int     @id @default(autoincrement())
+  active        Boolean @default(false)
+  morningTime   String
+  afternoonTime String
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
