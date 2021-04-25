@@ -8,12 +8,27 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String
-  email    String @unique
+  id       Int     @id @default(autoincrement())
+  username String?
+  email    String  @unique
 
   todoItems       TodoItem[]
   reminderSetting ReminderSetting?
+  tokens          Token[]
+}
+
+model Token {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAp  DateTime  @updatedAt
+  type       TokenType
+  emailToken String?   @unique
+  valid      Boolean   @default(true)
+  expiration DateTime
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
 }
 
 model TodoItem {
@@ -49,4 +64,9 @@ enum Priority {
 enum Category {
   WORK
   PRIVATE
+}
+
+enum TokenType {
+  EMAIL
+  API
 }
