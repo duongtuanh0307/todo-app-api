@@ -19,5 +19,4 @@
 
 ## TODO:
 
-- Add login count or display instruction flag to control display/hide using instruction
 - Add daily email sending function

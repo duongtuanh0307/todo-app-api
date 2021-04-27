@@ -1,4 +1,4 @@
-import { TokenType } from ".prisma/client";
+import { Priority, TokenType } from ".prisma/client";
 import { unauthorized, badImplementation } from "@hapi/boom";
 import Hapi from "@hapi/hapi";
 import Joi from "@hapi/joi";
@@ -14,6 +14,8 @@ type AuthenticateInput = {
   email: string;
   emailToken: string;
 };
+
+const MAXIMUM_COUNT = 2147483647;
 
 const authApiHandler = async (
   request: Hapi.Request,
@@ -61,8 +63,25 @@ const authApiHandler = async (
           valid: false,
         },
       });
+      const loginCount =
+        fetchedEmailToken?.user?.loginCount + 1 < MAXIMUM_COUNT
+          ? fetchedEmailToken?.user?.loginCount + 1
+          : fetchedEmailToken?.user?.loginCount;
+      await prisma.user.update({
+        where: {
+          id: fetchedEmailToken?.user?.id,
+        },
+        data: {
+          loginCount: loginCount,
+        },
+      });
       const authToken = generateAuthToken(createdToken.id);
-      return h.response().code(200).header("Authorization", authToken);
+      return h
+        .response({
+          displayIntruction: loginCount === 1,
+        })
+        .code(200)
+        .header("Authorization", authToken);
     } else {
       return unauthorized();
     }
