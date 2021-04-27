@@ -6,10 +6,12 @@ import { TodoItem } from "../types";
 import Joi from "@hapi/joi";
 import { Category, Priority } from ".prisma/client";
 import { isValidDate } from "../../../utility/helpers";
+import { isCreator } from "../../../utility/auth-helpers";
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 
 const updateTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
-  const payload = request.payload as Partial<TodoItem> & { userId: number }; //TODO: Remove this and fix pre-condition after adding authentification
+  const payload = request.payload as Partial<TodoItem> & { userId: number };
   const todoId = parseInt(request.params.todoId);
   const priority = payload.priority?.toUpperCase() as Priority;
   const category = payload.category?.toUpperCase() as Category;
@@ -19,15 +21,6 @@ const updateTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
     return badRequest("Format of Date should be YYYY-MM-DD");
 
   try {
-    const targetItem = await prisma.todoItem.findUnique({
-      where: { id: todoId },
-      select: {
-        userId: true,
-      },
-    });
-    const itemOwnerId = targetItem?.userId || -1;
-    if (itemOwnerId !== payload.userId)
-      return h.response("Item can be updated by creator only").code(403);
     const updatedItem = await prisma.todoItem.update({
       where: {
         id: todoId,
@@ -50,6 +43,11 @@ export const updateTodoRoute = {
   path: "/todos/{todoId}",
   handler: updateTodo,
   options: {
+    pre: [isCreator],
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       payload: updateTodoValidator,
       params: Joi.object({ todoId: Joi.string() }),

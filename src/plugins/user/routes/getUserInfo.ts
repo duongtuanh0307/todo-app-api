@@ -1,6 +1,8 @@
 import Hapi from "@hapi/hapi";
 import { badImplementation, badRequest } from "@hapi/boom";
 import Joi from "@hapi/joi";
+import { isRequestedPerson } from "../../../utility/auth-helpers";
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 
 const getUserInfo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
@@ -31,6 +33,11 @@ export const getUserInfoRoute = {
   path: "/user/{userId}",
   handler: getUserInfo,
   options: {
+    pre: [isRequestedPerson],
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       params: Joi.object({ userId: Joi.string() }),
       failAction: (

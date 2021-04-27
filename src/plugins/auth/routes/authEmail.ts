@@ -2,8 +2,8 @@ import { badImplementation } from "@hapi/boom";
 import Hapi from "@hapi/hapi";
 import { TokenType } from "@prisma/client";
 import { add } from "date-fns";
-
-const EMAIL_TOKEN_EXPIRATION_MINUTES = 3;
+import Joi from "@hapi/joi";
+import { EMAIL_TOKEN_EXPIRATION_MINUTES } from "../constants";
 
 type LoginInput = {
   email: string;
@@ -26,6 +26,13 @@ const loginHandler = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
           connectOrCreate: {
             create: {
               email,
+              reminderSetting: {
+                create: {
+                  active: false,
+                  morningTime: "07:00:00",
+                  afternoonTime: "19:00:00",
+                },
+              },
             },
             where: {
               email,
@@ -51,5 +58,10 @@ export const authEmailPlugin = {
   handler: loginHandler,
   options: {
     auth: false,
+    validate: {
+      payload: Joi.object({
+        email: Joi.string().email().required(),
+      }),
+    },
   },
 } as Hapi.ServerRoute;

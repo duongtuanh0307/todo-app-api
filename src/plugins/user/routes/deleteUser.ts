@@ -2,6 +2,9 @@ import { badImplementation } from "@hapi/boom";
 import Hapi from "@hapi/hapi";
 import Joi from "@hapi/joi";
 
+import { isRequestedPerson } from "../../../utility/auth-helpers";
+import { API_AUTH_STATEGY } from "./../../auth/constants";
+
 const deleteUser = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
   const userId = parseInt(request.params.userId);
@@ -36,6 +39,11 @@ export const deleteUserRoute = {
   path: "/user/{userId}",
   handler: deleteUser,
   options: {
+    pre: [isRequestedPerson],
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       params: Joi.object({
         todoId: Joi.string(),
