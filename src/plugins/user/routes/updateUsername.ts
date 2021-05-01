@@ -1,31 +1,21 @@
 import Hapi from "@hapi/hapi";
 import { badImplementation } from "@hapi/boom";
 
-import { User } from "../types";
 import { inputUserValidator } from "../validations";
 import Joi from "@hapi/joi";
+import { isRequestedPerson } from "../../../utility/auth-helpers";
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 
 const updateUsername = async (
   request: Hapi.Request,
   h: Hapi.ResponseToolkit
 ) => {
   const { prisma } = request.server.app;
-  const payload = request.payload as User;
+  const payload = request.payload as { username: string };
   const userId = parseInt(request.params.userId);
-  const { email, username } = payload;
+  const { username } = payload;
 
   try {
-    const targetUser = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-      select: {
-        id: true,
-      },
-    });
-    if (targetUser?.id !== userId) {
-      return h.response("Fobidden request").code(403);
-    }
     const updatedUser = await prisma.user.update({
       where: {
         id: userId,
@@ -46,6 +36,11 @@ export const updateUsernameRoute = {
   path: "/user/{userId}",
   handler: updateUsername,
   options: {
+    pre: [isRequestedPerson],
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       payload: inputUserValidator,
       params: Joi.object({ userId: Joi.string() }),

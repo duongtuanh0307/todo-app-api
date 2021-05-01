@@ -1,9 +1,11 @@
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 import Hapi from "@hapi/hapi";
 import { badImplementation, badRequest } from "@hapi/boom";
 import Joi from "@hapi/joi";
 
 import { isValidReminderTime } from "../../../utility/helpers";
 import { ReminderSetting } from "../types";
+import { isRequestedPerson } from "../../../utility/auth-helpers";
 
 const updateReminderSetting = async (
   request: Hapi.Request,
@@ -53,6 +55,11 @@ export const updateReminderRoute = {
   path: "/user/reminder/{userId}",
   handler: updateReminderSetting,
   options: {
+    pre: [isRequestedPerson],
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       params: Joi.object({ userId: Joi.string() }),
       failAction: (

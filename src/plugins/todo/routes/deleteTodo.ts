@@ -1,22 +1,14 @@
 import { badImplementation } from "@hapi/boom";
 import Hapi from "@hapi/hapi";
 import Joi from "@hapi/joi";
+import { isCreator } from "../../../utility/auth-helpers";
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 
 const deleteTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
-  const payload = request.payload as { userId: number }; //TODO: Remove this and fix pre-condition after adding authentification
   const todoId = parseInt(request.params.todoId);
 
   try {
-    const targetItem = await prisma.todoItem.findUnique({
-      where: { id: todoId },
-      select: {
-        userId: true,
-      },
-    });
-    const itemOwnerId = targetItem?.userId || -1;
-    if (itemOwnerId !== payload.userId)
-      return h.response("Item can be deleted by creator only").code(403);
     await prisma.todoItem.delete({
       where: {
         id: todoId,
@@ -34,6 +26,11 @@ export const deleteTodoRoute = {
   path: "/todos/{todoId}",
   handler: deleteTodo,
   options: {
+    pre: [isCreator],
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       params: Joi.object({
         todoId: Joi.string(),

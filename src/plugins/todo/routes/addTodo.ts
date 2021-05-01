@@ -1,3 +1,4 @@
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 import { createTodoValidator } from "../validations";
 import Hapi from "@hapi/hapi";
 import { badImplementation, badRequest } from "@hapi/boom";
@@ -48,6 +49,10 @@ export const addTodoRoute = {
   path: "/todos/add",
   handler: addNewTodo,
   options: {
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       payload: createTodoValidator,
       failAction: (

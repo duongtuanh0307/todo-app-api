@@ -28,7 +28,7 @@ const sendEmailToken = async (email: string, token: string) => {
     to: email,
     from: "duongtuanh1996@gmail.com",
     subject: "Login token for the mordern backend API",
-    text: `The login token for the API is: ${token}`,
+    text: `Your verify code is ${token}. Verify code will expire after 15 minutes`,
   };
 
   await sendgrid.send(msg);

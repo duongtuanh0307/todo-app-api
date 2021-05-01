@@ -1,6 +1,6 @@
+import { API_AUTH_STATEGY } from "./../../auth/constants";
 import { badImplementation } from "@hapi/boom";
 import Hapi from "@hapi/hapi";
-
 import Joi from "@hapi/joi";
 
 const getTodoList = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
@@ -34,6 +34,10 @@ export const getTodoListRoute = {
   path: "/todos/{userId}",
   handler: getTodoList,
   options: {
+    auth: {
+      mode: "required",
+      strategy: API_AUTH_STATEGY,
+    },
     validate: {
       params: Joi.object({ userId: Joi.string() }),
       failAction: (
