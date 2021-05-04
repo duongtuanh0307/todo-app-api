@@ -36,5 +36,8 @@
   },
   "engines": {
     "node": "15.7.0"
-  }
+  },
+  "resolutions": {
+    "@hapi/podium": "4.1.1"
+}
 }
