@@ -7,7 +7,7 @@
         "esModuleInterop": true,
         "paths": {
             "@hapi/podium": [
-                "../node_modules/@types/hapi_podium"
+                "./node_modules/@types/hapi_podium"
             ]
         }
     }
