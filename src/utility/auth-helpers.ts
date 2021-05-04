@@ -25,7 +25,6 @@ export const isCreator = async (
 };
 
 //pre function to check if requested user id match current user id as noone accept for the user him-/her-self can view/modify his/her info:
-
 export const isRequestedPerson = (
   request: Hapi.Request,
   h: Hapi.ResponseToolkit

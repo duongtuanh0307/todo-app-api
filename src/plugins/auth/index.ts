@@ -4,6 +4,13 @@ import { authApiPlugin } from "./routes/authApi";
 import { API_AUTH_STATEGY, JWT_SECRET, JWT_ALGORITHM } from "./constants";
 import Joi from "@hapi/joi";
 
+declare module "@hapi/hapi" {
+  interface AuthCredentials {
+    userId: number;
+    tokenId: number;
+  }
+}
+
 export const authPlugin: Hapi.Plugin<null> = {
   name: "app/auth",
   dependencies: ["prisma", "hapi-auth-jwt2", "app/email/send-token"],

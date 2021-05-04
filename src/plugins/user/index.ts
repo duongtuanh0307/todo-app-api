@@ -3,6 +3,7 @@ import { updateUsernameRoute } from "./routes/updateUsername";
 import { updateReminderRoute } from "./routes/updateReminderSetting";
 import { getUserInfoRoute } from "./routes/getUserInfo";
 import { deleteUserRoute } from "./routes/deleteUser";
+import { getReminderSettedUsers } from "./routes/getReminderSettedUsers";
 
 export const usersPlugin = {
   name: "app/users",
@@ -13,6 +14,7 @@ export const usersPlugin = {
       updateReminderRoute,
       getUserInfoRoute,
       deleteUserRoute,
+      getReminderSettedUsers,
     ]);
   },
 };
