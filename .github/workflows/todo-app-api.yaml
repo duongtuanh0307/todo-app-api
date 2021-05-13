@@ -1,4 +1,4 @@
-name: todo-app
+name: dta-todo-app-api
 on: push
 
 jobs:
