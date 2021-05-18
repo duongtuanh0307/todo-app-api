@@ -6,29 +6,11 @@ import Joi from "@hapi/joi";
 const getTodoList = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   const { prisma } = request.server.app;
   const userId = parseInt(request.params.userId);
-  const payload = request.payload as {
-    scheduleFor?: string;
-    category?: "work" | "private";
-    priority?: "high" | "normal" | "low";
-  };
-  const scheduleFor = payload.scheduleFor;
-  const category = payload.category?.toUpperCase() as
-    | "WORK"
-    | "PRIVATE"
-    | undefined;
-  const priority = payload.category?.toUpperCase() as
-    | "HIGH"
-    | "NORMAL"
-    | "LOW"
-    | undefined;
 
   try {
     const todosList = await prisma.todoItem.findMany({
       where: {
         userId: userId,
-        scheduleFor: scheduleFor,
-        category: category,
-        priority: priority,
       },
       select: {
         id: true,

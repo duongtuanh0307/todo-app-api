@@ -1,9 +1,11 @@
-import { Priority, TokenType } from ".prisma/client";
+import { TokenType } from ".prisma/client";
 import { unauthorized, badImplementation } from "@hapi/boom";
 import Hapi from "@hapi/hapi";
 import Joi from "@hapi/joi";
 import { add } from "date-fns";
+import { id } from "date-fns/locale";
 import jwt from "jsonwebtoken";
+import { usersPlugin } from "../../user";
 import {
   AUTHENTICATION_TOKEN_EXPIRATION_HOURS,
   JWT_SECRET,
@@ -78,6 +80,7 @@ const authApiHandler = async (
       const authToken = generateAuthToken(createdToken.id);
       return h
         .response({
+          user: fetchedEmailToken?.user,
           displayIntruction: loginCount === 1,
         })
         .code(200)

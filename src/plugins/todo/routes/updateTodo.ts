@@ -29,6 +29,7 @@ const updateTodo = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         ...payload,
         priority: priority,
         category: category,
+        scheduleFor: scheduleFor,
       },
     });
     return h.response(updatedItem).code(200);

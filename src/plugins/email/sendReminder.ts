@@ -25,9 +25,9 @@ const sendReminder = async (
   todoListUrl: string
 ) => {
   const msg = {
-    to: email,
-    from: "duongtuanh1996@gmail.com",
-    subject: "Login token for the mordern backend API",
+    to: "duongtuanh3796@gmail.com",
+    from: "duongtuanh3796@gmail.com",
+    subject: `Today's Todo list of ${email}`,
     text: `check and update today's Todo at: ${todoListUrl}`,
     send_at: [...sendingTime],
   };

@@ -25,9 +25,9 @@ export const sendTokenPlugin = {
 
 const sendEmailToken = async (email: string, token: string) => {
   const msg = {
-    to: email,
-    from: "duongtuanh1996@gmail.com",
-    subject: "Login token for the mordern backend API",
+    to: "duongtuanh3796@gmail.com",
+    from: "duongtuanh3796@gmail.com",
+    subject: `Login token for ${email}`,
     text: `Your verify code is ${token}. Verify code will expire after 15 minutes`,
   };
 

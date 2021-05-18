@@ -9,7 +9,7 @@
 
 - PUT /user/{userId}: edit Username
 - PUT /user/reminder/{userId}: edit reminder setting of specific user
-- GET /user/{userId}: get infomation of user
+- GET /user/detail: get infomation of user
 - DELETE /user/{userId}: delete user and related setting, todo items
 
 #### Authentication:

@@ -11,6 +11,12 @@ import { sendReminderJob } from "./cron-jobs";
 const server: Hapi.Server = Hapi.server({
   port: process.env.PORT || 3030,
   host: process.env.HOST || "localhost",
+  routes: {
+    cors: {
+      origin: ["*"],
+      exposedHeaders: ["Authorization"],
+    },
+  },
 });
 
 export const createServer = async () => {

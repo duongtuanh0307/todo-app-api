@@ -6,11 +6,5 @@ export const isValidReminderTime = (time: string) => {
 //Accept date format  YYYY-MM-DD only
 export const isValidDate = (date: string) => {
   const regEx = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
-  if (!regEx.test(date)) return false;
-  const dateArr = date.split("-").map((str) => parseInt(str));
-  const [year, month, day] = dateArr;
-  const inputDate = new Date(year, month, day);
-  const now = new Date();
-  if (inputDate < now) return false;
-  return true;
+  return regEx.test(date);
 };
